@@ -1,22 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 import { logOut } from "@/app/(auth)/actions";
 import { Button } from "@/components/ui/button";
-import { createClient } from "@/lib/supabase/server";
+import { requireUser } from "@/lib/auth";
 
 export const metadata: Metadata = { title: "Dashboard" };
 
 export default async function DashboardPage() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  // The proxy already protects this page; this is a second safety check.
-  if (!user) {
-    redirect("/login");
-  }
+  const user = await requireUser();
 
   const fullName =
     typeof user.user_metadata.full_name === "string"
@@ -48,6 +39,12 @@ export default async function DashboardPage() {
           Start by adding your CV. Once it&apos;s here, HireReady can check it
           against any job post you find.
         </p>
+        <Link
+          href="/cv/preview"
+          className="mt-8 inline-block font-semibold text-ink underline decoration-highlight decoration-4 underline-offset-4 transition-colors hover:decoration-gap"
+        >
+          See how HireReady formats a CV
+        </Link>
       </main>
     </div>
   );
