@@ -4,11 +4,11 @@ import type { CvData } from "@/lib/cv/schema";
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <section className="mt-5">
-      <h2 className="border-b border-neutral-400 pb-1 text-[15px] font-bold text-neutral-900">
+    <section className="mt-7">
+      <h2 className="border-b border-neutral-400 pb-1.5 text-[15px] font-bold text-neutral-900">
         {title}
       </h2>
-      <div className="mt-2 space-y-3">{children}</div>
+      <div className="mt-3 space-y-5">{children}</div>
     </section>
   );
 }
@@ -17,7 +17,7 @@ function Bullets({ items }: { items: string[] }) {
   if (items.length === 0) return null;
 
   return (
-    <ul className="mt-1 list-disc space-y-0.5 pl-5">
+    <ul className="mt-2 list-disc space-y-1 pl-5">
       {items.map((item, index) => (
         <li key={index}>{item}</li>
       ))}
@@ -32,6 +32,10 @@ function EntryHeading({ title, dates }: { title: string; dates: string }) {
       {dates && <p className="text-neutral-700">{dates}</p>}
     </div>
   );
+}
+
+function SubLine({ children }: { children: ReactNode }) {
+  return <p className="mt-0.5 italic">{children}</p>;
 }
 
 // An ATS-friendly CV: one column, standard headings, plain text.
@@ -51,12 +55,14 @@ export function CvDocument({ cv }: { cv: CvData }) {
       style={{ fontFamily: "Arial, Helvetica, sans-serif" }}
     >
       <header className="text-center">
-        <h1 className="text-[26px] font-bold">{contact.fullName}</h1>
+        <h1 className="text-[28px] leading-tight font-bold">
+          {contact.fullName}
+        </h1>
         {contact.headline && (
-          <p className="mt-0.5 text-[16px]">{contact.headline}</p>
+          <p className="mt-2.5 text-[16px]">{contact.headline}</p>
         )}
         {contactDetails.length > 0 && (
-          <p className="mt-1.5 text-[13px] text-neutral-700">
+          <p className="mt-2.5 text-[13px] text-neutral-700">
             {contactDetails.join(" | ")}
           </p>
         )}
@@ -76,9 +82,9 @@ export function CvDocument({ cv }: { cv: CvData }) {
                 title={job.jobTitle}
                 dates={formatDateRange(job.startDate, job.endDate)}
               />
-              <p className="italic">
+              <SubLine>
                 {[job.company, job.location].filter(Boolean).join(", ")}
-              </p>
+              </SubLine>
               <Bullets items={job.bullets} />
             </div>
           ))}
@@ -94,9 +100,7 @@ export function CvDocument({ cv }: { cv: CvData }) {
                 dates={project.link ? displayUrl(project.link) : ""}
               />
               {project.technologies.length > 0 && (
-                <p className="italic">
-                  Technologies: {project.technologies.join(", ")}
-                </p>
+                <SubLine>Technologies: {project.technologies.join(", ")}</SubLine>
               )}
               <Bullets items={project.bullets} />
             </div>
@@ -112,9 +116,9 @@ export function CvDocument({ cv }: { cv: CvData }) {
                 title={item.qualification}
                 dates={formatDateRange(item.startDate, item.endDate)}
               />
-              <p className="italic">
+              <SubLine>
                 {[item.institution, item.location].filter(Boolean).join(", ")}
-              </p>
+              </SubLine>
               <Bullets items={item.details} />
             </div>
           ))}
@@ -123,7 +127,7 @@ export function CvDocument({ cv }: { cv: CvData }) {
 
       {cv.skills.length > 0 && (
         <Section title="Skills">
-          <div className="space-y-1">
+          <div className="space-y-1.5">
             {cv.skills.map((group) => (
               <p key={group.id}>
                 <strong>{group.category}:</strong> {group.skills.join(", ")}
@@ -135,7 +139,7 @@ export function CvDocument({ cv }: { cv: CvData }) {
 
       {cv.certifications.length > 0 && (
         <Section title="Certifications">
-          <div className="space-y-1">
+          <div className="space-y-1.5">
             {cv.certifications.map((cert) => (
               <p key={cert.id}>
                 <strong>{cert.name}</strong>

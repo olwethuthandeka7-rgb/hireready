@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CvDocument } from "@/components/cv/cv-document";
+import { buttonStyles } from "@/components/ui/button";
 import { requireUser } from "@/lib/auth";
 import { sampleCv } from "@/lib/cv/sample";
 
@@ -27,14 +28,32 @@ export default async function CvPreviewPage() {
       </header>
 
       <main className="mx-auto max-w-5xl px-5 pb-20 sm:px-8">
-        <h1 className="font-display text-3xl font-extrabold tracking-tight sm:text-4xl">
-          Sample CV
-        </h1>
-        <p className="mt-3 max-w-2xl leading-relaxed text-graphite">
-          This is how HireReady formats every CV: one column, standard section
-          headings and plain text, so applicant tracking systems can read every
-          line.
-        </p>
+        <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h1 className="font-display text-3xl font-extrabold tracking-tight sm:text-4xl">
+              Sample CV
+            </h1>
+            <p className="mt-3 max-w-xl leading-relaxed text-graphite">
+              This is how HireReady formats every CV: one column, standard
+              section headings and plain text, so applicant tracking systems
+              can read every line.
+            </p>
+          </div>
+          <div className="flex shrink-0 flex-wrap gap-3">
+            <a
+              href="/api/cv/sample/export?format=pdf"
+              className={buttonStyles({ variant: "primary" })}
+            >
+              Download PDF
+            </a>
+            <a
+              href="/api/cv/sample/export?format=docx"
+              className={buttonStyles({ variant: "secondary" })}
+            >
+              Download Word
+            </a>
+          </div>
+        </div>
 
         {/* A4 sheet. Scrolls sideways on small screens. */}
         <div className="mt-8 overflow-x-auto rounded-lg">
