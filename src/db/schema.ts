@@ -30,6 +30,8 @@ export const cvs = pgTable(
     source: cvSourceEnum("source").notNull(),
     // The full structured CV, validated by cvSchema before saving.
     data: jsonb("data").$type<CvData>().notNull(),
+    // Questions and suggestions from the AI to make this CV stronger.
+    notes: jsonb("notes").$type<string[]>().notNull().default([]),
     // The user's main CV, used by default when analysing jobs.
     isPrimary: boolean("is_primary").notNull().default(false),
     createdAt: timestamp("created_at", { withTimezone: true })

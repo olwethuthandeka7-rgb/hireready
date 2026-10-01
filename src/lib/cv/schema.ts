@@ -66,7 +66,7 @@ export const experienceSchema = z
     jobTitle: requiredText("a job title", 100),
     company: requiredText("the company name", 100),
     location: optionalText(100),
-    startDate: month,
+    startDate: month.nullable(), // null when the start date isn't known
     endDate: month.nullable(), // null means "Present"
     bullets: bulletPoints,
   })
@@ -87,7 +87,9 @@ export const educationSchema = z
 export const projectSchema = z.object({
   id,
   name: requiredText("the project name", 100),
-  link: z.url("Enter a full web address, starting with https://").or(z.literal("")),
+  link: z
+    .url("Enter a full web address, starting with https://")
+    .or(z.literal("")),
   technologies: z
     .array(requiredText("a technology", 40))
     .max(15, "List up to 15 technologies."),
@@ -110,16 +112,18 @@ export const certificationSchema = z.object({
   date: month.nullable(),
 });
 
+export const LANGUAGE_LEVELS = [
+  "Native",
+  "Fluent",
+  "Professional",
+  "Conversational",
+  "Basic",
+] as const;
+
 export const languageSchema = z.object({
   id,
   name: requiredText("the language", 50),
-  proficiency: z.enum([
-    "Native",
-    "Fluent",
-    "Professional",
-    "Conversational",
-    "Basic",
-  ]),
+  proficiency: z.enum(LANGUAGE_LEVELS),
 });
 
 /* ===== The full CV ===== */

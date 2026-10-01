@@ -1,0 +1,1 @@
+ALTER TABLE "cvs" ADD COLUMN "notes" jsonb DEFAULT '[]'::jsonb NOT NULL;

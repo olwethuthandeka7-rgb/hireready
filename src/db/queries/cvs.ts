@@ -43,7 +43,7 @@ export async function getCvForUser(userId: string, cvId: string) {
 
 export async function createCvForUser(
   userId: string,
-  input: { title?: string; source: CvSource; data: CvData },
+  input: { title?: string; source: CvSource; data: CvData; notes?: string[] },
 ) {
   // Never trust data just because it has the right TypeScript type.
   // Validate it again right before it reaches the database.
@@ -63,6 +63,7 @@ export async function createCvForUser(
       title: input.title?.trim() || "My CV",
       source: input.source,
       data,
+      notes: input.notes ?? [],
       isPrimary: existing.length === 0,
     })
     .returning();
@@ -70,18 +71,18 @@ export async function createCvForUser(
   return row;
 }
 
-export async function updateCvDataForUser(
+export async function updateCvForUser(
   userId: string,
   cvId: string,
-  data: CvData,
+  input: { data: CvData; notes?: string[] },
 ) {
   if (!isValidId(cvId)) return null;
 
-  const validData = cvSchema.parse(data);
+  const data = cvSchema.parse(input.data);
 
   const [row] = await db
     .update(cvs)
-    .set({ data: validData })
+    .set(input.notes ? { data, notes: input.notes } : { data })
     .where(and(eq(cvs.id, cvId), eq(cvs.userId, userId)))
     .returning();
 

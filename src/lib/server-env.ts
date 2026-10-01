@@ -6,10 +6,17 @@ const serverEnvSchema = z.object({
   DATABASE_URL: z
     .string()
     .startsWith("postgresql://", "DATABASE_URL must start with postgresql://"),
+  AI_API_KEY: z
+    .string()
+    .min(1, "AI_API_KEY is missing. Add your Gemini API key to .env.local."),
+  // Which AI model to use. Optional: falls back to a fast, free-tier model.
+  AI_MODEL: z.string().min(1).default("gemini-3.5-flash"),
 });
 
 const result = serverEnvSchema.safeParse({
   DATABASE_URL: process.env.DATABASE_URL,
+  AI_API_KEY: process.env.AI_API_KEY,
+  AI_MODEL: process.env.AI_MODEL || undefined,
 });
 
 if (!result.success) {
