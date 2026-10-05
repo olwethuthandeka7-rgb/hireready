@@ -17,11 +17,7 @@ export default async function DashboardPage() {
   const user = await requireUser();
   const cvs = await listCvsForUser(user.id);
 
-  const fullName =
-    typeof user.user_metadata.full_name === "string"
-      ? user.user_metadata.full_name
-      : "";
-  const firstName = fullName.split(" ")[0] || "there";
+  const firstName = user.fullName.split(" ")[0] || "there";
 
   return (
     <div className="min-h-screen bg-paper text-ink">
@@ -45,13 +41,19 @@ export default async function DashboardPage() {
         </h1>
         <p className="mt-4 max-w-xl text-lg leading-relaxed text-graphite">
           {cvs.length === 0
-            ? "Let's create your first CV. Tell HireReady about yourself and it writes the whole thing."
+            ? "Let's create your first CV. Tell HireReady about yourself, or upload the CV you already have."
             : "Pick a CV to view, download or improve, or create a new one."}
         </p>
 
-        <div className="mt-8">
+        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
           <Link href="/cv/new" className={buttonStyles({ size: "lg" })}>
             Build my CV with AI
+          </Link>
+          <Link
+            href="/cv/upload"
+            className={buttonStyles({ variant: "secondary", size: "lg" })}
+          >
+            Upload my CV
           </Link>
         </div>
 

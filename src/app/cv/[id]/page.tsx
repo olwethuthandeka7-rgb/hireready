@@ -5,8 +5,12 @@ import { CvDocument } from "@/components/cv/cv-document";
 import { buttonStyles } from "@/components/ui/button";
 import { getCvForUser } from "@/db/queries/cvs";
 import { requireUser } from "@/lib/auth";
+import { ReviseForm } from "./revise-form";
 
 export const metadata: Metadata = { title: "Your CV" };
+
+// Rewriting a CV with AI can take a while.
+export const maxDuration = 60;
 
 type CvPageProps = {
   params: Promise<{ id: string }>;
@@ -59,7 +63,7 @@ export default async function CvPage({ params }: CvPageProps) {
           </div>
         </div>
 
-        <div className="mt-8 grid gap-8 xl:grid-cols-[minmax(0,1fr)_22rem]">
+        <div className="mt-8 grid gap-8 xl:grid-cols-[minmax(0,1fr)_24rem]">
           {/* A4 sheet. Scrolls sideways on small screens. */}
           <div className="overflow-x-auto rounded-lg">
             <div className="mx-auto min-h-[297mm] w-[210mm] bg-white shadow-[0_30px_80px_-30px_rgba(28,24,56,0.35)]">
@@ -67,30 +71,36 @@ export default async function CvPage({ params }: CvPageProps) {
             </div>
           </div>
 
-          <aside className="order-first h-fit rounded-[1.75rem] border border-rule bg-surface p-6 xl:order-none">
-            <h2 className="font-semibold">Make it stronger</h2>
-            {cv.notes.length > 0 ? (
-              <>
-                <p className="mt-1 text-sm text-graphite">
-                  Answering these will improve your CV.
+          <aside className="order-first h-fit space-y-6 rounded-[1.75rem] border border-rule bg-surface p-6 xl:sticky xl:top-6 xl:order-none">
+            <section>
+              <h2 className="font-semibold">Make it stronger</h2>
+              {cv.notes.length > 0 ? (
+                <>
+                  <p className="mt-1 text-sm text-graphite">
+                    Answering these will improve your CV.
+                  </p>
+                  <ul className="mt-4 space-y-3 text-sm leading-relaxed">
+                    {cv.notes.map((note) => (
+                      <li key={note} className="flex gap-3">
+                        <span
+                          className="mt-1.5 size-2.5 shrink-0 rounded-sm bg-gap"
+                          aria-hidden
+                        />
+                        {note}
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              ) : (
+                <p className="mt-2 text-sm text-graphite">
+                  Nothing important is missing. Nice work.
                 </p>
-                <ul className="mt-4 space-y-3 text-sm leading-relaxed">
-                  {cv.notes.map((note) => (
-                    <li key={note} className="flex gap-3">
-                      <span
-                        className="mt-1.5 size-2.5 shrink-0 rounded-sm bg-gap"
-                        aria-hidden
-                      />
-                      {note}
-                    </li>
-                  ))}
-                </ul>
-              </>
-            ) : (
-              <p className="mt-2 text-sm text-graphite">
-                Nothing important is missing. Nice work.
-              </p>
-            )}
+              )}
+            </section>
+
+            <div className="border-t border-rule pt-6">
+              <ReviseForm cvId={cv.id} />
+            </div>
           </aside>
         </div>
       </main>

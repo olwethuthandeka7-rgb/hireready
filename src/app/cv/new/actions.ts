@@ -39,17 +39,12 @@ export async function buildCvAction(
     return { fieldError: parsed.error.issues[0]?.message, about };
   }
 
-  const fullName =
-    typeof user.user_metadata.full_name === "string"
-      ? user.user_metadata.full_name
-      : "";
-
   let cvId: string;
 
   try {
     const { cv, notes } = await writeCvFromText({
       text: parsed.data,
-      fallback: { fullName, email: user.email ?? "" },
+      fallback: { fullName: user.fullName, email: user.email },
     });
 
     const row = await createCvForUser(user.id, {

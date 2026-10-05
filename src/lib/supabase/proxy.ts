@@ -40,16 +40,16 @@ export async function updateSession(request: NextRequest) {
     },
   );
 
-  // Important: refreshes the session if it has expired. Do not remove.
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // Important: refreshes the session if it has expired, and checks the
+  // login token locally (fast). Do not remove.
+  const { data } = await supabase.auth.getClaims();
+  const isLoggedIn = Boolean(data?.claims);
 
   const { pathname } = request.nextUrl;
 
   // Logged out and trying to open a private page → go to login,
   // remembering where they wanted to go.
-  if (!user && matches(pathname, PROTECTED_PATHS)) {
+  if (!isLoggedIn && matches(pathname, PROTECTED_PATHS)) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
     url.search = "";
@@ -60,7 +60,7 @@ export async function updateSession(request: NextRequest) {
   // Already logged in and opening login or sign-up → go to dashboard.
   // (The "check your email" page is still allowed.)
   if (
-    user &&
+    isLoggedIn &&
     matches(pathname, AUTH_PATHS) &&
     pathname !== "/signup/check-email"
   ) {

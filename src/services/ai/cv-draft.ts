@@ -257,3 +257,57 @@ export function toCvData(
 
   return { cv, notes };
 }
+
+/* ===== Turning a saved CV back into the AI's format ===== */
+
+// The reverse of toCvData: used when we send an existing CV to the AI to edit.
+export function toAiCv(cv: CvData): AiCv {
+  return {
+    contact: {
+      fullName: cv.contact.fullName,
+      headline: cv.contact.headline,
+      email: cv.contact.email,
+      phone: cv.contact.phone,
+      location: cv.contact.location,
+      links: cv.contact.links.map(({ label, url }) => ({ label, url })),
+    },
+    summary: cv.summary,
+    experience: cv.experience.map((job) => ({
+      jobTitle: job.jobTitle,
+      company: job.company,
+      location: job.location,
+      startDate: job.startDate ?? "",
+      endDate: job.endDate ?? "",
+      // A job with a start date but no end date is a current job.
+      isCurrent: job.startDate !== null && job.endDate === null,
+      bullets: job.bullets,
+    })),
+    projects: cv.projects.map((project) => ({
+      name: project.name,
+      link: project.link,
+      technologies: project.technologies,
+      bullets: project.bullets,
+    })),
+    education: cv.education.map((item) => ({
+      qualification: item.qualification,
+      institution: item.institution,
+      location: item.location,
+      startDate: item.startDate ?? "",
+      endDate: item.endDate ?? "",
+      details: item.details,
+    })),
+    skills: cv.skills.map((group) => ({
+      category: group.category,
+      skills: group.skills,
+    })),
+    certifications: cv.certifications.map((cert) => ({
+      name: cert.name,
+      issuer: cert.issuer,
+      date: cert.date ?? "",
+    })),
+    languages: cv.languages.map((language) => ({
+      name: language.name,
+      proficiency: language.proficiency,
+    })),
+  };
+}

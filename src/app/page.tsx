@@ -32,22 +32,22 @@ const steps = [
   {
     title: "Bring your CV",
     description:
-      "Upload the one you have, or build a new one by answering a few questions from the AI assistant.",
+      "Upload the one you have, or build a new one by telling the AI assistant about yourself.",
   },
   {
-    title: "Paste a job post",
+    title: "Add a job post",
     description:
-      "HireReady marks every requirement you already meet, and every one you don't.",
+      "Upload or paste a job post. HireReady marks every requirement you already meet, and every one you don't.",
   },
   {
     title: "Close the gaps",
     description:
-      "Get a CV and cover letter tailored to that job, formatted so hiring software can read every line.",
+      "Get a CV tailored to that job, formatted so hiring software can read every line.",
   },
   {
-    title: "Track your applications",
+    title: "Download and apply",
     description:
-      "See where each application stands, from sent to interview to offer.",
+      "Download your CV as a PDF or Word file, ready to send.",
   },
 ];
 
@@ -73,7 +73,7 @@ export default function Home() {
             href="/signup"
             className="rounded-full bg-ink px-5 py-2.5 text-sm font-semibold text-paper transition-colors hover:bg-highlight hover:text-on-mark"
           >
-            Start free
+            Sign up
           </Link>
         </nav>
       </header>
@@ -105,8 +105,7 @@ export default function Home() {
               </Link>
             </div>
             <p className="mt-5 text-sm text-graphite">
-              Free to start. Every CV is formatted to pass applicant tracking
-              systems.
+              Every CV is formatted to pass applicant tracking systems.
             </p>
           </div>
 
@@ -207,7 +206,7 @@ export default function Home() {
               href="/signup"
               className="inline-flex shrink-0 items-center justify-center rounded-full bg-highlight px-8 py-4 font-semibold text-on-mark transition-transform hover:-translate-y-0.5 focus-visible:outline-on-band"
             >
-              Start free
+              Create your account
             </Link>
           </div>
         </section>
