@@ -41,11 +41,11 @@ export default async function DashboardPage() {
         </h1>
         <p className="mt-4 max-w-xl text-lg leading-relaxed text-graphite">
           {cvs.length === 0
-            ? "Let's create your first CV. Tell HireReady about yourself, or upload the CV you already have."
+            ? "Let's create your first CV. Tell HireReady about yourself, upload the CV you have, or start from a job post."
             : "Pick a CV to view, download or improve, or create a new one."}
         </p>
 
-        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+        <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
           <Link href="/cv/new" className={buttonStyles({ size: "lg" })}>
             Build my CV with AI
           </Link>
@@ -54,6 +54,12 @@ export default async function DashboardPage() {
             className={buttonStyles({ variant: "secondary", size: "lg" })}
           >
             Upload my CV
+          </Link>
+          <Link
+            href="/cv/tailor"
+            className={buttonStyles({ variant: "secondary", size: "lg" })}
+          >
+            Match a job post
           </Link>
         </div>
 
